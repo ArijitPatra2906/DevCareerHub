@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import AppLayout from "./Layout/app-layout";
 import LandingPage from "./pages/landing";
-import PostJobsPage from "./pages/post-job";
+// import PostJobsPage from "./pages/post-job";
 import MyJobsPage from "./pages/my-jobs";
 import SavedJobsPage from "./pages/saved-job";
 import JobListingPage from "./pages/job-listing";
@@ -10,6 +10,7 @@ import OnboardingPage from "./pages/onboarding";
 import JobPage from "./pages/job";
 import { ThemeProvider } from "./components/theme-provider";
 import ProtectedRoute from "./components/protected-route";
+import PostJob from "./pages/postJob";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
         path: "/post-job",
         element: (
           <ProtectedRoute>
-            <PostJobsPage />
+            <PostJob />
           </ProtectedRoute>
         ),
       },

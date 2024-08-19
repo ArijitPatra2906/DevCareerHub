@@ -1,6 +1,7 @@
 import { getSingleJobByID, updateHiringStatus } from "@/api/apiJobs";
 import ApplicationCard from "@/components/applicationCard";
 import { ApplyJob } from "@/components/applyJob";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -34,7 +35,6 @@ const JobPage = () => {
       job_id: id,
     }
   );
-  console.log(user);
 
   useEffect(() => {
     if (isLoaded) fnJob();
@@ -43,6 +43,13 @@ const JobPage = () => {
   const handleStatusChange = (value) => {
     const isOpen = value === "open";
     fnHiringStatus(isOpen).then(() => fnJob());
+  };
+
+  const extractSkills = (skillsString) => {
+    return skillsString
+      .split(",") // Split the string into an array by commas
+      .map((skill) => skill.trim()) // Trim any extra whitespace from each skill
+      .filter((skill) => skill); // Remove any empty strings
   };
 
   if (!isLoaded || loadingJob) {
@@ -113,6 +120,18 @@ const JobPage = () => {
 
       <h2 className="text-2xl sm:text-3xl font-bold">No of opening</h2>
       <p className="sm:text-lg">{job?.noOfOpening}</p>
+      {job?.skills && (
+        <>
+          <h2 className="text-2xl sm:text-3xl font-bold">Skills required</h2>
+          <div className="flex flex-wrap gap-4">
+            {extractSkills(job?.skills).map((skill, index) => (
+              <Badge key={index} variant="secondary">
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </>
+      )}
 
       <h2 className="text-2xl sm:text-3xl font-bold">Key responsibilities</h2>
 
