@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import AppLayout from "./Layout/app-layout";
 import LandingPage from "./pages/landing";
-// import PostJobsPage from "./pages/post-job";
 import MyJobsPage from "./pages/my-jobs";
 import SavedJobsPage from "./pages/saved-job";
 import JobListingPage from "./pages/job-listing";

@@ -19,7 +19,8 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { saveJob } from "@/api/apiJobs";
+import { deleteJob, saveJob } from "@/api/apiJobs";
+import { BarLoader } from "react-spinners";
 
 const JobCard = ({
   job,
@@ -29,9 +30,9 @@ const JobCard = ({
 }) => {
   const [saved, setSaved] = useState(savedInit);
 
-  //   const { loading: loadingDeleteJob, fn: fnDeleteJob } = useFetch(deleteJob, {
-  //     job_id: job.id,
-  //   });
+  const { loading: loadingDeleteJob, fn: fnDeleteJob } = useFetch(deleteJob, {
+    job_id: job.id,
+  });
 
   const {
     loading: loadingSavedJob,
@@ -48,6 +49,11 @@ const JobCard = ({
       user_id: user.id,
       job_id: job.id,
     });
+    onJobAction();
+  };
+
+  const handleDeleteJob = async () => {
+    await fnDeleteJob();
     onJobAction();
   };
 
@@ -78,20 +84,22 @@ const JobCard = ({
 
   return (
     <Card className="flex flex-col">
-      <CardHeader>
-        <CardTitle>
+      {loadingDeleteJob && (
+        <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
+      )}
+      <CardHeader className="flex">
+        <CardTitle className="flex justify-between font-bold">
           {job.title}
           {isMyJob && (
             <Trash2Icon
               fill="red"
               size={18}
               className="text-red-300 cursor-pointer"
-              //   onClick={handleDeleteJob}
+              onClick={handleDeleteJob}
             />
           )}
         </CardTitle>
       </CardHeader>
-
       <CardContent className="flex flex-col gap-4 flex-1">
         <div className="flex justify-between items-center">
           {job.company && <h2>{job.company.name}</h2>}
@@ -128,7 +136,6 @@ const JobCard = ({
         <hr />
         {job.description.substring(0, job.description.indexOf("."))}.
       </CardContent>
-
       <CardFooter className="flex gap-2">
         <Link to={`/job/${job.id}`} className="flex-1">
           <Button variant="secondary" className="w-full">
