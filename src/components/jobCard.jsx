@@ -7,7 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Heart, MapPinIcon, Trash2Icon } from "lucide-react";
+import {
+  Banknote,
+  Dot,
+  Heart,
+  History,
+  House,
+  MapPinIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import useFetch from "@/hooks/use-fetch";
@@ -43,12 +51,33 @@ const JobCard = ({
     onJobAction();
   };
 
+  function getTimeDifference(createdAt) {
+    const now = new Date();
+    const createdDate = new Date(createdAt);
+    const diffInMs = now - createdDate;
+
+    const seconds = Math.floor(diffInMs / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days} day${days > 1 ? "s" : ""} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    } else {
+      return `${seconds} second${seconds > 1 ? "s" : ""} ago`;
+    }
+  }
+
   useEffect(() => {
     if (savedJob !== undefined) setSaved(savedJob?.length > 0);
   }, [savedJob]);
 
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
         <CardTitle>
           {job.title}
@@ -64,11 +93,37 @@ const JobCard = ({
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4 flex-1">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
+          {job.company && <h2>{job.company.name}</h2>}
           {job.company && <img src={job.company.logo} className="h-6" />}
-          <div className="flex gap-2 items-center">
-            <MapPinIcon size={15} /> {job.location}
+        </div>
+        <div className="flex gap-4">
+          {job?.isRemote ? (
+            <div className="flex gap-2">
+              <House />
+              Work From Home
+            </div>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <MapPinIcon size={15} /> {job.location} (on-site)
+            </div>
+          )}
+          <div className="flex gap-2">
+            <Banknote />
+            {job?.salary}/month
           </div>
+        </div>
+        <div className="flex gap-4">
+          <div className="flex gap-2">
+            <History />
+            {getTimeDifference(job.created_at)}
+          </div>
+          {job?.isPartTime && (
+            <div className="flex gap-2">
+              <Dot />
+              Part Time
+            </div>
+          )}
         </div>
         <hr />
         {job.description.substring(0, job.description.indexOf("."))}.

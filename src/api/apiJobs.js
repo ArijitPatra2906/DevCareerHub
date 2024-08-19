@@ -3,7 +3,7 @@ import supabaseClient from "@/utils/supabase";
 // Fetch All Jobs
 export async function getJobs(
   token,
-  { location, company_id, salary, searchQuery }
+  { location, company_id, salary, searchQuery, isRemote, isPartTime }
 ) {
   const supabase = await supabaseClient(token);
   let query = supabase.from("jobs").select("*,company: companies(name,logo)");
@@ -23,6 +23,14 @@ export async function getJobs(
 
   if (salary) {
     query = query.gte("salary", salary);
+  }
+
+  if (isRemote) {
+    query = query.eq("isRemote", isRemote);
+  }
+
+  if (isPartTime) {
+    query = query.eq("isPartTime", isPartTime);
   }
 
   const { data, error } = await query;
@@ -85,4 +93,61 @@ export async function saveJob(token, { alreadySaved }, saveData) {
       console.log(error);
     }
   }
+}
+
+// Read single job by id
+export async function getSingleJobByID(token, { job_id }) {
+  const supabase = await supabaseClient(token);
+  let query = supabase
+    .from("jobs")
+    .select("*, company: companies(name,logo), applications: applications(*)")
+    .eq("id", job_id)
+    .single();
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching Job:", error);
+    return null;
+  }
+
+  return data;
+}
+
+// - job isOpen toggle - (recruiter_id = auth.uid())
+export async function updateHiringStatus(token, { job_id }, isOpen) {
+  try {
+    const supabase = await supabaseClient(token);
+    const { data, error } = await supabase
+      .from("jobs")
+      .update({ isOpen })
+      .eq("id", job_id)
+      .select();
+
+    if (error) {
+      console.error("Error Updating Hiring Status:", error);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// - post job
+export async function addNewJob(token, _, jobData) {
+  const supabase = await supabaseClient(token);
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .insert([jobData])
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Error Creating Job");
+  }
+
+  return data;
 }
