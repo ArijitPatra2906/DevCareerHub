@@ -12,7 +12,7 @@ import {
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
 import MDEditor from "@uiw/react-md-editor";
-import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
+import { Briefcase, MapPinIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";

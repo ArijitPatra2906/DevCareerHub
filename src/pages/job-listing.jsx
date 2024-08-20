@@ -3,30 +3,9 @@ import { getJobs } from "@/api/apiJobs";
 import FilterComponent from "@/components/filter";
 import JobCard from "@/components/jobCard";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
-import { City, State } from "country-state-city";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
