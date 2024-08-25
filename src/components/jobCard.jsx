@@ -24,7 +24,7 @@ import { BarLoader } from "react-spinners";
 
 const JobCard = ({
   job,
-  savedInit = false,
+  savedInit = true,
   onJobAction = () => {},
   isMyJob = false,
 }) => {

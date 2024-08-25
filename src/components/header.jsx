@@ -6,17 +6,18 @@ import {
   UserButton,
   SignIn,
   useUser,
-  SignInButton,
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
+import Logo from "./logo";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
 
   const [search, setSearch] = useSearchParams();
+  const [scrolled, setScrolled] = useState(false);
+
   const { user } = useUser();
-  // console.log(user, "arijit");
 
   useEffect(() => {
     if (search.get("sign-in")) {
@@ -31,11 +32,27 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <nav className="py-4 flex justify-between items-center">
+      <nav
+        className={`py-4 flex justify-between items-center shadow-md fixed top-0 left-0 w-full z-50 px-4 md:px-14 ${
+          scrolled ? "bg-black" : "bg-transparent"
+        }`}
+      >
         <Link to="/">
-          <img src="/logo.png" className="h-14 w-40" alt="devcareerhub Logo" />
+          <Logo />
         </Link>
         <div className="flex gap-8">
           <SignedOut>
@@ -44,14 +61,6 @@ const Header = () => {
             </Button>
           </SignedOut>
           <SignedIn>
-            {user?.unsafeMetadata?.role === "recruiter" && (
-              <Link to="/post-job">
-                <Button variant="destructive" className="rounded-full">
-                  <PenBox size={20} className="mr-2" />
-                  Post a Job
-                </Button>
-              </Link>
-            )}
             <UserButton
               appearance={{
                 elements: {
@@ -61,7 +70,11 @@ const Header = () => {
             >
               <UserButton.MenuItems>
                 <UserButton.Link
-                  label="My Jobs"
+                  label={
+                    user?.unsafeMetadata?.role === "recruiter"
+                      ? "My Jobs"
+                      : "My Applications"
+                  }
                   labelIcon={<BriefcaseBusiness size={15} />}
                   href="/my-jobs"
                 />
@@ -79,7 +92,7 @@ const Header = () => {
 
       {showSignIn && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
           onClick={handleOverlayClick}
         >
           <SignIn
@@ -88,6 +101,9 @@ const Header = () => {
           />
         </div>
       )}
+
+      {/* This div adds padding at the top to avoid content being hidden under the fixed header */}
+      <div className="pt-16"></div>
     </>
   );
 };

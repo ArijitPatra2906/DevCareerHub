@@ -34,6 +34,7 @@ export async function addNewCompany(token, _, companyData) {
       {
         name: companyData.name,
         logo: logo,
+        about: companyData.about,
       },
     ])
     .select();

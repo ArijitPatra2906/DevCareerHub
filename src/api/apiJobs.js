@@ -85,7 +85,9 @@ export async function getSingleJobByID(token, { job_id }) {
   const supabase = await supabaseClient(token);
   let query = supabase
     .from("jobs")
-    .select("*, company: companies(name,logo), applications: applications(*)")
+    .select(
+      "*, company: companies(name,logo,about), applications: applications(*)"
+    )
     .eq("id", job_id)
     .single();
 

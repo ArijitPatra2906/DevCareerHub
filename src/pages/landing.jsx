@@ -4,7 +4,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import companies from "../data/companies.json";
 import faqs from "../data/faqs.json";
 import Autoplay from "embla-carousel-autoplay";
@@ -15,8 +15,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useUser } from "@clerk/clerk-react";
+import { enqueueSnackbar } from "notistack";
 
 const LandingPage = () => {
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  const handlePostJob = () => {
+    if (user?.unsafeMetadata?.role === "recruiter") {
+      navigate("/post-job");
+    } else {
+      enqueueSnackbar("Create a recruiter account for posting jobs!!", {
+        variant: "info",
+      });
+    }
+  };
+
   return (
     <main className="flex flex-col gap-10 sm:gap-20 py-10 sm:py-20">
       <section className="text-center ">
@@ -36,11 +51,9 @@ const LandingPage = () => {
             Find Jobs
           </Button>
         </Link>
-        <Link to={"/post-job"}>
-          <Button variant="destructive" size="xl">
-            Post a Job
-          </Button>
-        </Link>
+        <Button onClick={handlePostJob} variant="destructive" size="xl">
+          Post a Job
+        </Button>
       </div>
       <Carousel
         plugins={[

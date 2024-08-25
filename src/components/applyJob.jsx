@@ -19,6 +19,7 @@ import { BarLoader } from "react-spinners";
 import { applyToJob } from "@/api/apiApplications";
 import useFetch from "@/hooks/use-fetch";
 import { Textarea } from "./ui/textarea";
+import { enqueueSnackbar } from "notistack";
 
 const schema = z.object({
   experience: z
@@ -64,6 +65,9 @@ export function ApplyJob({ user, job, fetchJob, applied = false }) {
       status: "applied",
       resume: data.resume[0],
     }).then(() => {
+      enqueueSnackbar("Application submited successfully!!", {
+        variant: "success",
+      });
       fetchJob();
       reset();
     });

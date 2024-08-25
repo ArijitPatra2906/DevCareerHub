@@ -69,14 +69,14 @@ const JobListingPage = () => {
   };
 
   if (!isLoaded) {
-    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
+    return <BarLoader className="my-4" width={"100%"} color="#36d7b7" />;
   }
   return (
-    <div className="px-0 md:px-4 lg:px-16">
+    <div className="px-0 md:px-4 lg:px-16 mt-8">
+      <h1 className="gradient-title font-extrabold text-3xl sm:text-5xl lg:text-6xl text-center pb-0 md:pb-8">
+        Latest Jobs
+      </h1>
       <div className="flex justify-between items-center gap-1 pb-8 md:pb-0">
-        <h1 className="gradient-title font-extrabold text-3xl sm:text-5xl lg:text-6xl text-center pb-0 md:pb-8">
-          Latest Jobs
-        </h1>
         <Button
           size="lg"
           variant={"destructive"}
@@ -157,6 +157,7 @@ const JobListingPage = () => {
           {loadingJobs && (
             <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
           )}
+
           {!loadingJobs && (
             <div className="grid grid-cols-1 gap-4">
               {jobs?.length ? (
@@ -168,7 +169,7 @@ const JobListingPage = () => {
                   />
                 ))
               ) : (
-                <div className="text-center">No Jobs Found 😢</div>
+                <div className="text-center">No Jobs Found!!</div>
               )}
             </div>
           )}

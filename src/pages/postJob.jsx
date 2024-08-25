@@ -19,6 +19,7 @@ import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MDEditor from "@uiw/react-md-editor";
 import { State } from "country-state-city";
+import { enqueueSnackbar } from "notistack";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -69,6 +70,10 @@ const PostJob = () => {
       ...data,
       recruiter_id: user.id,
       isOpen: true,
+    }).then(() => {
+      enqueueSnackbar("Job created successfully!!", {
+        variant: "success",
+      });
     });
   };
 
@@ -90,7 +95,7 @@ const PostJob = () => {
   }, [isLoaded]);
 
   if (!isLoaded || loadingCompanies) {
-    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
+    return <BarLoader className="my-4" width={"100%"} color="#36d7b7" />;
   }
 
   if (user?.unsafeMetadata?.role !== "recruiter") {

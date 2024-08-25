@@ -17,6 +17,7 @@ import { Textarea } from "./ui/textarea";
 import { addNewCompany } from "@/api/apiCompanies";
 import useFetch from "@/hooks/use-fetch";
 import { useEffect } from "react";
+import { enqueueSnackbar } from "notistack";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Company name is required" }),
@@ -52,6 +53,10 @@ const AddCompany = ({ fetchCompanies }) => {
     fnAddCompany({
       ...data,
       logo: data.logo[0],
+    }).then(() => {
+      enqueueSnackbar("New company added successfully!!", {
+        variant: "success",
+      });
     });
   };
 
