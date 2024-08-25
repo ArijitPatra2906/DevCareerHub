@@ -73,10 +73,13 @@ const JobListingPage = () => {
   }
   return (
     <div className="px-0 md:px-4 lg:px-16 mt-8">
-      <h1 className="gradient-title font-extrabold text-3xl sm:text-5xl lg:text-6xl text-center pb-0 md:pb-8">
+      <h1 className="gradient-title hidden md:block font-extrabold text-3xl sm:text-5xl lg:text-6xl text-center pb-0 md:pb-8">
         Latest Jobs
       </h1>
       <div className="flex justify-between items-center gap-1 pb-8 md:pb-0">
+        <h1 className="gradient-title block md:hidden font-extrabold text-3xl sm:text-5xl lg:text-6xl text-center pb-0 md:pb-8">
+          Latest Jobs
+        </h1>{" "}
         <Button
           size="lg"
           variant={"destructive"}

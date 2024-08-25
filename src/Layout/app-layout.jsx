@@ -11,7 +11,7 @@ const AppLayout = () => {
         <Outlet />
       </main>
       <div className="p-10 text-center bg-gray-800 mt-10">
-        Made with 💗 by Arijit Patra
+        ©2024 Arijit Patra. All right reserved.
       </div>
     </div>
   );

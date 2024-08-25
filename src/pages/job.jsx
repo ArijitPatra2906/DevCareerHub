@@ -12,7 +12,7 @@ import {
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
 import MDEditor from "@uiw/react-md-editor";
-import { Briefcase, MapPinIcon } from "lucide-react";
+import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
@@ -65,7 +65,7 @@ const JobPage = () => {
         <img src={job?.company?.logo} className="h-12" alt={job?.title} />
       </div>
 
-      <div className="flex justify-between ">
+      <div className="flex justify-between flex-wrap gap-5">
         <div className="flex gap-2">
           <MapPinIcon /> {job?.location} (
           {job?.isRemote ? "Work from home" : "On site"})
@@ -73,7 +73,7 @@ const JobPage = () => {
         <div className="flex gap-2">
           <Briefcase /> {job?.applications?.length} Applications
         </div>
-        {/* <div className="flex gap-2">
+        <div className="flex gap-2">
           {job?.isOpen ? (
             <>
               <DoorOpen /> Open
@@ -83,7 +83,7 @@ const JobPage = () => {
               <DoorClosed /> Closed
             </>
           )}
-        </div> */}
+        </div>
       </div>
       {/* TODO: handleStatusChange is not working */}
       {loadingHiringStatus && <BarLoader width={"100%"} color="#36d7b7" />}

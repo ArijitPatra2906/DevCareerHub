@@ -104,7 +104,7 @@ const PostJob = () => {
 
   return (
     <div>
-      <h1 className="gradient-title font-extrabold text-5xl sm:text-7xl text-center pb-8">
+      <h1 className="gradient-title font-extrabold text-4xl md:text-5xl sm:text-7xl text-center pb-8">
         Post a Job
       </h1>
       <form
@@ -159,7 +159,7 @@ const PostJob = () => {
             )}
           </div>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center flex-wrap sm:flex-nowrap">
           <Controller
             name="location"
             control={control}
@@ -207,6 +207,7 @@ const PostJob = () => {
           />
           <AddCompanyDrawer fetchCompanies={fnCompanies} />
         </div>
+
         {errors.location && (
           <p className="text-red-500">{errors.location.message}</p>
         )}
