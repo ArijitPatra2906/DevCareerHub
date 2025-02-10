@@ -30,7 +30,7 @@ const LandingPage = () => {
       if (user && user?.unsafeMetadata?.role === "recruiter") {
         navigate("/post-job");
       } else {
-        enqueueSnackbar("Create a recruiter account for posting jobs!!", {
+        enqueueSnackbar("Login with a recruiter account for posting jobs!!", {
           variant: "info",
         });
       }

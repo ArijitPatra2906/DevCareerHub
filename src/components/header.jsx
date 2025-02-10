@@ -46,7 +46,7 @@ const Header = () => {
       if (user?.unsafeMetadata?.role === "recruiter") {
         navigate("/post-job");
       } else {
-        enqueueSnackbar("Login with a recruiter account for posting jobs!!", {
+        enqueueSnackbar("You are not allowed to post post!", {
           variant: "info",
         });
       }
