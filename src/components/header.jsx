@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import {
   SignedIn,
   SignedOut,
@@ -8,16 +13,18 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
-import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
+import { BriefcaseBusiness, Heart, Search, SquarePen } from "lucide-react";
 import Logo from "./logo";
+import { enqueueSnackbar } from "notistack";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
-
   const [search, setSearch] = useSearchParams();
   const [scrolled, setScrolled] = useState(false);
 
   const { user } = useUser();
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the current route
 
   useEffect(() => {
     if (search.get("sign-in")) {
@@ -32,10 +39,23 @@ const Header = () => {
     }
   };
 
+  const handlePostJob = () => {
+    if (!user) {
+      navigate("/post-job");
+    } else {
+      if (user?.unsafeMetadata?.role === "recruiter") {
+        navigate("/post-job");
+      } else {
+        enqueueSnackbar("Login with a recruiter account for posting jobs!!", {
+          variant: "info",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 0;
-      setScrolled(isScrolled);
+      setScrolled(window.scrollY > 0);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -54,7 +74,33 @@ const Header = () => {
         <Link to="/">
           <Logo />
         </Link>
-        <div className="flex gap-8">
+        <div className="flex gap-2">
+          {/* Hide "Find Jobs" & "Post Jobs" buttons if the route is "/" */}
+          {location.pathname !== "/" && (
+            <>
+              {location.pathname !== "/jobs" && (
+                <Link to={"/jobs"}>
+                  <Button
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                  >
+                    <Search className="w-5 h-5" />
+                    <span className="hidden md:inline">Find Jobs</span>
+                  </Button>
+                </Link>
+              )}
+              {location.pathname !== "/post-job" && (
+                <Button
+                  variant="outline"
+                  onClick={handlePostJob}
+                  className="flex items-center space-x-2"
+                >
+                  <SquarePen className="w-5 h-5" />
+                  <span className="hidden md:inline">Post Jobs</span>
+                </Button>
+              )}
+            </>
+          )}
           <SignedOut>
             <Button variant="outline" onClick={() => setShowSignIn(true)}>
               Login
@@ -102,7 +148,6 @@ const Header = () => {
         </div>
       )}
 
-      {/* This div adds padding at the top to avoid content being hidden under the fixed header */}
       <div className="pt-16"></div>
     </>
   );

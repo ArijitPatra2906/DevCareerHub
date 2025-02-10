@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/accordion";
 import { useUser } from "@clerk/clerk-react";
 import { enqueueSnackbar } from "notistack";
+import { Search, SquarePen } from "lucide-react";
 
 const LandingPage = () => {
   const { user } = useUser();
@@ -51,12 +52,23 @@ const LandingPage = () => {
       </section>
       <div className="flex gap-6 flex-wrap justify-center">
         <Link to={"/jobs"}>
-          <Button variant="blue" size="xl">
-            Find Jobs
+          <Button
+            variant="blue"
+            size="xl"
+            className="flex items-center space-x-2"
+          >
+            <Search className="w-5 h-5" />
+            <span>Find Jobs</span>
           </Button>
         </Link>
-        <Button onClick={handlePostJob} variant="destructive" size="xl">
-          Post a Job
+        <Button
+          onClick={handlePostJob}
+          variant="destructive"
+          size="xl"
+          className="flex items-center space-x-2"
+        >
+          <SquarePen className="w-5 h-5" />
+          <span> Post a Job</span>
         </Button>
       </div>
       <Carousel
